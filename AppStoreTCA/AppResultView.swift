@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AppResultView: View {
-    @State private var app: AppApiModel
+    private let app: AppApiModel
 
     public init(_ app: AppApiModel) {
         self.app = app
@@ -21,6 +21,8 @@ struct AppResultView: View {
                     .frame(width: 64, height: 64)
                     .cornerRadius(12)
                 appTitleView
+                Spacer()
+                GetButton()
             }
             HStack {
                 ratingView
@@ -126,7 +128,3 @@ extension AppResultView {
         )
     }
 }
-
-// #Preview() {
-//    AppResultView()
-// }
