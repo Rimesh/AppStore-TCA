@@ -15,9 +15,9 @@ struct AppApiModel: Decodable, Identifiable, Equatable {
     let artistName: String
     let bundleId: String
     let releaseDate: String
+    let releaseNotes: String
     let sellerName: String
     let version: String
-    let releaseNotes: String
     let currentVersionReleaseDate: String
     let description: String
     let fileSizeBytes: String
@@ -26,4 +26,9 @@ struct AppApiModel: Decodable, Identifiable, Equatable {
     let trackContentRating: String
     let averageUserRating: Double
     let userRatingCount: Int
+    let artworkUrl512: URL
+    let artworkUrl100: URL
+    let artworkUrl60: URL
+    let primaryGenreName: String
+    let screenshotUrls: [URL]
 }

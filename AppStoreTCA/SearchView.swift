@@ -67,9 +67,11 @@ struct SearchView: View {
         NavigationStack {
             List {
                 ForEach(store.results) { app in
-                    appView(app)
+                    AppResultView(app)
+                        .listRowInsets(EdgeInsets())
                 }
             }
+            .listStyle(PlainListStyle())
             .navigationTitle("Search")
         }
         .searchable(
@@ -82,11 +84,5 @@ struct SearchView: View {
                 await store.send(.searchQueryChangeDebounced).finish()
             } catch {}
         }
-    }
-
-    @ViewBuilder
-    func appView(_ model: AppApiModel) -> some View {
-        Text(model.trackName)
-            .font(.headline)
     }
 }
