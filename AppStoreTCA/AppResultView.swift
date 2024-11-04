@@ -16,7 +16,7 @@ struct AppResultView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
+            HStack(alignment: .center) {
                 appIconView
                     .frame(width: 64, height: 64)
                     .cornerRadius(12)
@@ -53,8 +53,10 @@ extension AppResultView {
     var appTitleView: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(app.trackName)
+                .lineLimit(1)
                 .font(.headline)
             Text(app.artistName)
+                .lineLimit(1)
                 .font(.subheadline)
                 .foregroundStyle(Color.secondary)
         }

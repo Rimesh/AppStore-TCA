@@ -69,6 +69,7 @@ struct SearchView: View {
                 ForEach(store.results) { app in
                     AppResultView(app)
                         .listRowInsets(EdgeInsets())
+                        .listRowSeparator(.hidden)
                 }
             }
             .listStyle(PlainListStyle())

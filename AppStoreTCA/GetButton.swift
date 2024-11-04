@@ -11,33 +11,31 @@ struct GetButton: View {
     @State private var progress: CGFloat = 0.0
 
     var body: some View {
-        VStack(spacing: 20) {
-            Button(action: {
-                toggleDownloading()
-            }) {
-                if isDownloading {
-                    CircularProgressView(progress: progress)
-                        .frame(width: 32, height: 32)
-                } else {
-                    VStack {
-                        Text("Get")
-                            .font(.headline)
-                            .foregroundColor(.blue)
-                            .padding(.vertical, 4)
-                            .padding(.horizontal, 25)
-                            .background {
-                                Capsule()
-                                    .foregroundStyle(Color.black.opacity(0.1))
-                            }
-                        Text("In-App Purchases")
-                            .font(.system(size: 10, weight: .medium))
-                            .foregroundStyle(.secondary)
-                    }
+        Button(action: {
+            toggleDownloading()
+        }) {
+            if isDownloading {
+                CircularProgressView(progress: progress)
+                    .frame(width: 32, height: 32)
+            } else {
+                VStack {
+                    Text("Get")
+                        .font(.headline)
+                        .foregroundColor(.blue)
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 25)
+                        .background {
+                            Capsule()
+                                .foregroundStyle(Color.black.opacity(0.1))
+                        }
+                    Text("In-App Purchases")
+                        .font(.system(size: 10, weight: .medium))
+                        .foregroundStyle(.secondary)
                 }
             }
-            .buttonStyle(PlainButtonStyle())
         }
-        .padding()
+        .buttonStyle(PlainButtonStyle())
+        .frame(minWidth: 80)
     }
 
     private func toggleDownloading() {
