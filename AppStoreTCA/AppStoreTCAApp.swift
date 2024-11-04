@@ -11,7 +11,14 @@ import SwiftUI
 struct AppStoreTCAApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SearchView(
+                store: Store(
+                    initialState: Search.State()
+                ) {
+                    Search()
+                        ._printChanges()
+                }
+            )
         }
     }
 }
