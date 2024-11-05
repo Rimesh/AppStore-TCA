@@ -31,8 +31,7 @@ struct Search {
             case let .searchQueryChanged(query):
                 state.searchQuery = query
 
-                // When the query is cleared we can clear the search results, but we have to make sure to
-                // cancel any in-flight search requests too, otherwise we may get data coming in later.
+                // Cancel in-flight requests
                 guard !state.searchQuery.isEmpty else {
                     state.results = []
                     return .cancel(id: CancelID.appSearch)

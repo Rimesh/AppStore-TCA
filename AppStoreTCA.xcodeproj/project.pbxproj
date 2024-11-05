@@ -10,14 +10,30 @@
 		0D3462612CD8E2BB00D72BEA /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 0D3462602CD8E2BB00D72BEA /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		0D48AF322CDA0B16004902CE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0D3462442CD8E02700D72BEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0D34624B2CD8E02700D72BEA;
+			remoteInfo = AppStoreTCA;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0D34624C2CD8E02700D72BEA /* AppStoreTCA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppStoreTCA.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D48AF2E2CDA0B16004902CE /* AppStoreTCATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppStoreTCATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0D34624E2CD8E02700D72BEA /* AppStoreTCA */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AppStoreTCA;
+			sourceTree = "<group>";
+		};
+		0D48AF2F2CDA0B16004902CE /* AppStoreTCATests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AppStoreTCATests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -31,6 +47,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0D48AF2B2CDA0B16004902CE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -38,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				0D34624E2CD8E02700D72BEA /* AppStoreTCA */,
+				0D48AF2F2CDA0B16004902CE /* AppStoreTCATests */,
 				0D34624D2CD8E02700D72BEA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -46,6 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				0D34624C2CD8E02700D72BEA /* AppStoreTCA.app */,
+				0D48AF2E2CDA0B16004902CE /* AppStoreTCATests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,6 +101,29 @@
 			productReference = 0D34624C2CD8E02700D72BEA /* AppStoreTCA.app */;
 			productType = "com.apple.product-type.application";
 		};
+		0D48AF2D2CDA0B16004902CE /* AppStoreTCATests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0D48AF362CDA0B16004902CE /* Build configuration list for PBXNativeTarget "AppStoreTCATests" */;
+			buildPhases = (
+				0D48AF2A2CDA0B16004902CE /* Sources */,
+				0D48AF2B2CDA0B16004902CE /* Frameworks */,
+				0D48AF2C2CDA0B16004902CE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0D48AF332CDA0B16004902CE /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				0D48AF2F2CDA0B16004902CE /* AppStoreTCATests */,
+			);
+			name = AppStoreTCATests;
+			packageProductDependencies = (
+			);
+			productName = AppStoreTCATests;
+			productReference = 0D48AF2E2CDA0B16004902CE /* AppStoreTCATests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -88,6 +136,11 @@
 				TargetAttributes = {
 					0D34624B2CD8E02700D72BEA = {
 						CreatedOnToolsVersion = 16.0;
+					};
+					0D48AF2D2CDA0B16004902CE = {
+						CreatedOnToolsVersion = 16.0;
+						LastSwiftMigration = 1600;
+						TestTargetID = 0D34624B2CD8E02700D72BEA;
 					};
 				};
 			};
@@ -109,12 +162,20 @@
 			projectRoot = "";
 			targets = (
 				0D34624B2CD8E02700D72BEA /* AppStoreTCA */,
+				0D48AF2D2CDA0B16004902CE /* AppStoreTCATests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		0D34624A2CD8E02700D72BEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0D48AF2C2CDA0B16004902CE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -131,7 +192,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0D48AF2A2CDA0B16004902CE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0D48AF332CDA0B16004902CE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0D34624B2CD8E02700D72BEA /* AppStoreTCA */;
+			targetProxy = 0D48AF322CDA0B16004902CE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		0D3462582CD8E02800D72BEA /* Debug */ = {
@@ -311,6 +387,45 @@
 			};
 			name = Release;
 		};
+		0D48AF342CDA0B16004902CE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZVRRY5HA82;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.re.AppStoreTCATests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AppStoreTCA.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AppStoreTCA";
+			};
+			name = Debug;
+		};
+		0D48AF352CDA0B16004902CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZVRRY5HA82;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.re.AppStoreTCATests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AppStoreTCA.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AppStoreTCA";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -328,6 +443,15 @@
 			buildConfigurations = (
 				0D34625B2CD8E02800D72BEA /* Debug */,
 				0D34625C2CD8E02800D72BEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0D48AF362CDA0B16004902CE /* Build configuration list for PBXNativeTarget "AppStoreTCATests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0D48AF342CDA0B16004902CE /* Debug */,
+				0D48AF352CDA0B16004902CE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
