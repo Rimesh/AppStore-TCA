@@ -82,32 +82,42 @@ struct SearchView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(store.results) { app in
-                    AppResultView(app)
-                        .listRowInsets(EdgeInsets())
-                        .listRowSeparator(.hidden)
-                }
-                if store.results.isEmpty {
-                    CategoryGridView(store: store.scope(state: \.categories, action: \.categories))
-                        .listRowInsets(EdgeInsets())
-                        .listRowSeparator(.hidden)
-                }
-            }
-            .listStyle(PlainListStyle())
-            .padding()
-            .navigationTitle("Search")
+            contentView
+                .padding()
+                .navigationTitle("Search")
         }
         .searchable(
             text: $store.searchQuery.sending(\.searchQueryChanged),
             isPresented: $store.isSearchbarActive.sending(\.searchbarFocusChanged),
             prompt: "Apps, Games and more"
         )
+        .overlay {
+            if store.isSearchbarActive && store.results.isEmpty {
+                ContentUnavailableView.search(text: store.searchQuery)
+            }
+        }
         .task(id: store.searchQuery) {
             do {
-                try await Task.sleep(for: .milliseconds(300))
+                try await Task.sleep(for: .milliseconds(500))
                 await store.send(.searchQueryChangeDebounced).finish()
             } catch {}
         }
+    }
+
+    @ViewBuilder
+    var contentView: some View {
+        List {
+            ForEach(store.results) { app in
+                AppResultView(app)
+                    .listRowInsets(EdgeInsets())
+                    .listRowSeparator(.hidden)
+            }
+            if store.results.isEmpty && store.isSearchbarActive == false {
+                CategoryGridView(store: store.scope(state: \.categories, action: \.categories))
+                    .listRowInsets(EdgeInsets())
+                    .listRowSeparator(.hidden)
+            }
+        }
+        .listStyle(PlainListStyle())
     }
 }
