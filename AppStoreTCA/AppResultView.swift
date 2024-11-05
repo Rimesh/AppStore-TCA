@@ -34,7 +34,7 @@ struct AppResultView: View {
             .foregroundStyle(Color.secondary)
             screenshotsView
         }
-        .padding()
+        .padding(.vertical)
     }
 }
 

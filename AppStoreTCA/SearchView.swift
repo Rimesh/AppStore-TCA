@@ -70,8 +70,14 @@ struct SearchView: View {
                         .listRowInsets(EdgeInsets())
                         .listRowSeparator(.hidden)
                 }
+                if store.results.isEmpty {
+                    CategoryGridView()
+                        .listRowInsets(EdgeInsets())
+                        .listRowSeparator(.hidden)
+                }
             }
             .listStyle(PlainListStyle())
+            .padding()
             .navigationTitle("Search")
         }
         .searchable(

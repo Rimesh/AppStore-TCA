@@ -22,6 +22,23 @@ enum Category: String, CaseIterable {
 }
 
 struct CategoryTileView: View {
+    @Environment(\.sizeCategory) var sizeCategory
+
+    var scaleFactor: Double {
+        switch sizeCategory {
+        case .small: 0.8
+        case .medium: 0.9
+        case .large: 1
+        case .extraLarge: 1.1
+        case .extraExtraLarge: 1.2
+        case .extraExtraExtraLarge: 1.3
+        case .accessibilityMedium,
+             .accessibilityLarge, .accessibilityExtraLarge,
+             .accessibilityExtraExtraLarge, .accessibilityExtraExtraExtraLarge: 1.5
+        default: 1
+        }
+    }
+
     let category: Category
 
     public init(_ category: Category) {
@@ -36,6 +53,10 @@ struct CategoryTileView: View {
                     Image(category.rawValue)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
+                        .frame(
+                            width: 80 * scaleFactor,
+                            height: 80 * scaleFactor
+                        )
                 }
                 .padding()
                 HStack(alignment: .bottom) {
@@ -67,7 +88,7 @@ struct CategoryTileView: View {
 }
 
 #Preview() {
-    VStack {
+    ScrollView {
         ForEach(Category.allCases, id: \.self) { category in
             CategoryTileView(category)
         }
