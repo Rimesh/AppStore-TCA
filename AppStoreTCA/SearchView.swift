@@ -14,18 +14,21 @@ struct Search {
     struct State: Equatable {
         var results: [AppApiModel] = []
         var searchQuery = ""
+        var categories = CategoryFeature.State()
     }
 
     enum Action {
         case searchQueryChanged(String)
         case searchQueryChangeDebounced
         case searchResponse(Result<[AppApiModel], any Error>)
+        case categories(CategoryFeature.Action)
     }
 
     @Dependency(\.appStoreClient) var appStoreClient
     private enum CancelID { case appSearch }
 
     var body: some Reducer<State, Action> {
+        Scope(state: \.categories, action: \.categories) { CategoryFeature() }
         Reduce { state, action in
             switch action {
             case let .searchQueryChanged(query):
@@ -54,6 +57,14 @@ struct Search {
             case let .searchResponse(.success(response)):
                 state.results = response
                 return .none
+
+            case let .categories(.delegate(.selectCategory(category))):
+                return .run { send in
+                    await send(.searchQueryChanged(category.rawValue))
+                }
+
+            case .categories:
+                return .none
             }
         }
     }
@@ -71,7 +82,7 @@ struct SearchView: View {
                         .listRowSeparator(.hidden)
                 }
                 if store.results.isEmpty {
-                    CategoryGridView()
+                    CategoryGridView(store: store.scope(state: \.categories, action: \.categories))
                         .listRowInsets(EdgeInsets())
                         .listRowSeparator(.hidden)
                 }

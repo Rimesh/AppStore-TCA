@@ -4,12 +4,29 @@
 //
 //  Created by Rimesh Jotaniya on 05/11/24.
 //
-
+import ComposableArchitecture
 import SwiftUI
 
 struct CategoryGridView: View {
+    @Bindable var store: StoreOf<CategoryFeature>
+
     @Environment(\.sizeCategory) var sizeCategory
 
+    var body: some View {
+        ScrollView {
+            LazyVGrid(columns: columns, spacing: 8) {
+                ForEach(store.categories) { category in
+                    CategoryTileView(category)
+                        .onTapGesture {
+                            store.send(.categoryButtonTapped(category))
+                        }
+                }
+            }
+        }
+    }
+}
+
+extension CategoryGridView {
     private var columns: [GridItem] {
         var columnCount: Int {
             switch sizeCategory {
@@ -22,18 +39,4 @@ struct CategoryGridView: View {
 
         return Array(repeating: .init(.flexible()), count: columnCount)
     }
-
-    var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: 8) {
-                ForEach(Category.allCases, id: \.self) { category in
-                    CategoryTileView(category)
-                }
-            }
-        }
-    }
-}
-
-#Preview {
-    CategoryGridView()
 }

@@ -7,20 +7,6 @@
 
 import SwiftUI
 
-enum Category: String, CaseIterable {
-    case games, finance, music, social, shopping, photo, productivity, puzzle, utilities, travel
-
-    var gradientColor: Color {
-        switch self {
-        case .games, .photo: Color("categoryBlue")
-        case .finance, .productivity: Color("categoryGreen")
-        case .music, .puzzle: Color("categoryPink")
-        case .social, .utilities: Color("categoryPurple")
-        case .shopping, .travel: Color("categoryYellow")
-        }
-    }
-}
-
 struct CategoryTileView: View {
     @Environment(\.sizeCategory) var sizeCategory
 
