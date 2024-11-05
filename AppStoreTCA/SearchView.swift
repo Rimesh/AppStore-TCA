@@ -15,6 +15,7 @@ struct Search {
         var results: [AppApiModel] = []
         var searchQuery = ""
         var categories = CategoryFeature.State()
+        var isSearchbarActive = false
     }
 
     enum Action {
@@ -22,6 +23,7 @@ struct Search {
         case searchQueryChangeDebounced
         case searchResponse(Result<[AppApiModel], any Error>)
         case categories(CategoryFeature.Action)
+        case searchbarFocusChanged(Bool)
     }
 
     @Dependency(\.appStoreClient) var appStoreClient
@@ -59,11 +61,16 @@ struct Search {
                 return .none
 
             case let .categories(.delegate(.selectCategory(category))):
+                state.isSearchbarActive = true
                 return .run { send in
                     await send(.searchQueryChanged(category.rawValue))
                 }
 
             case .categories:
+                return .none
+
+            case let .searchbarFocusChanged(isActive):
+                state.isSearchbarActive = isActive
                 return .none
             }
         }
@@ -93,6 +100,7 @@ struct SearchView: View {
         }
         .searchable(
             text: $store.searchQuery.sending(\.searchQueryChanged),
+            isPresented: $store.isSearchbarActive.sending(\.searchbarFocusChanged),
             prompt: "Apps, Games and more"
         )
         .task(id: store.searchQuery) {
