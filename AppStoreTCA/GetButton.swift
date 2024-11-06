@@ -26,7 +26,7 @@ struct GetButton: View {
                         .padding(.horizontal, 25)
                         .background {
                             Capsule()
-                                .foregroundStyle(Color.black.opacity(0.1))
+                                .foregroundStyle(Color.gray.opacity(0.25))
                         }
                     Text("In-App Purchases")
                         .font(.system(size: 10, weight: .medium))
