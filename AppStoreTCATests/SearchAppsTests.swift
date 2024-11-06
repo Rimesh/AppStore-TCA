@@ -15,7 +15,7 @@ import Testing
 struct SearchAppTests {
     @Test
     func searchAndClearQuesry() async {
-        let store = TestStore(initialState: Search.State()) {
+        let store = TestStore(initialState: SearchFeature.State()) {
             Search()
         } withDependencies: { dependencies in
             dependencies.appStoreClient.search = { @Sendable _ in .mock }

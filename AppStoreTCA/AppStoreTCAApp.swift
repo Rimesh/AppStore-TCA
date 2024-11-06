@@ -13,9 +13,9 @@ struct AppStoreTCAApp: App {
         WindowGroup {
             SearchView(
                 store: Store(
-                    initialState: Search.State()
+                    initialState: SearchFeature.State()
                 ) {
-                    Search()
+                    SearchFeature()
                         ._printChanges()
                 }
             )
