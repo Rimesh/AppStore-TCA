@@ -16,6 +16,7 @@ struct Search {
         var searchQuery = ""
         var categories = CategoryFeature.State()
         var isSearchbarActive = false
+        var isLoading = false
     }
 
     enum Action {
@@ -34,11 +35,12 @@ struct Search {
         Reduce { state, action in
             switch action {
             case let .searchQueryChanged(query):
+                state.isLoading = true
                 state.searchQuery = query
-
                 // Cancel in-flight requests
                 guard !state.searchQuery.isEmpty else {
                     state.results = []
+                    state.isLoading = false
                     return .cancel(id: CancelID.appSearch)
                 }
                 return .none
@@ -53,14 +55,17 @@ struct Search {
                 .cancellable(id: CancelID.appSearch)
 
             case .searchResponse(.failure):
+                state.isLoading = false
                 state.results = []
                 return .none
 
             case let .searchResponse(.success(response)):
+                state.isLoading = false
                 state.results = response
                 return .none
 
             case let .categories(.delegate(.selectCategory(category))):
+                state.isLoading = true
                 state.isSearchbarActive = true
                 return .run { send in
                     await send(.searchQueryChanged(category.rawValue))
@@ -91,11 +96,7 @@ struct SearchView: View {
             isPresented: $store.isSearchbarActive.sending(\.searchbarFocusChanged),
             prompt: "Apps, Games and more"
         )
-        .overlay {
-            if store.isSearchbarActive && store.results.isEmpty {
-                ContentUnavailableView.search(text: store.searchQuery)
-            }
-        }
+        .overlay { overlayView }
         .task(id: store.searchQuery) {
             do {
                 try await Task.sleep(for: .milliseconds(500))
@@ -119,5 +120,14 @@ struct SearchView: View {
             }
         }
         .listStyle(PlainListStyle())
+    }
+
+    @ViewBuilder
+    var overlayView: some View {
+        if store.isLoading {
+            ProgressView()
+        } else if store.isSearchbarActive && store.results.isEmpty {
+            ContentUnavailableView.search(text: store.searchQuery)
+        }
     }
 }

@@ -15,13 +15,13 @@ struct AppApiModel: Decodable, Identifiable, Equatable {
     let artistName: String
     let bundleId: String
     let releaseDate: String
-    let releaseNotes: String
+    var releaseNotes: String?
     let sellerName: String
     let version: String
     let currentVersionReleaseDate: String
     let description: String
     let fileSizeBytes: String
-    let formattedPrice: String
+    var formattedPrice: String? = "Free"
     let contentAdvisoryRating: String
     let trackContentRating: String
     let averageUserRating: Double

@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum Category: String, CaseIterable, Identifiable {
-    case games, finance, music, social, shopping, photo, productivity, puzzle, utilities, travel
+    case finance, music, social, shopping, photo, productivity, games, puzzle, utilities, travel
 
     var id: String { rawValue }
 
