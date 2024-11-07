@@ -21,12 +21,20 @@ struct AppDetailsFeature {
 struct AppDetailsView: View {
     let store: StoreOf<AppDetailsFeature>
 
+    @Environment(\.sizeCategory) var sizeCategory
+    @ScaledMetric(relativeTo: .headline)
+    private var titleSpacing: CGFloat = 28
+
     var body: some View {
         VStack {
-            HStack(alignment: .top, spacing: 8) {
+            AHStack(hStackAlignment: .top,
+                    vStackAlignment: .leading)
+            {
                 appIcon
                 VStack(alignment: .leading) {
                     appTitleView
+                    Spacer()
+                        .frame(height: sizeCategory.isAccessibilityCategory ? 8 : titleSpacing)
                     downloadInfoView
                 }
             }
@@ -45,7 +53,7 @@ struct AppDetailsView: View {
             }
         }
         .frame(width: 120, height: 120)
-        .cornerRadius(26)
+        .cornerRadius(24)
     }
 
     private var appTitleView: some View {
@@ -57,15 +65,14 @@ struct AppDetailsView: View {
                 .font(.subheadline)
                 .foregroundStyle(Color.secondary)
         }
-        .background {
-            Color.yellow
-        }
     }
 
     private var downloadInfoView: some View {
-        HStack(alignment: .bottom) {
-            GetButton(isDownloading: .constant(false))
-            InAppPurchaseLabel(placement: .appDetails)
+        HStack(alignment: .center) {
+            AHStack(vStackAlignment: .leading) {
+                GetButton(isDownloading: .constant(false))
+                InAppPurchaseLabel(placement: .appDetails)
+            }
             Spacer()
             Image(systemName: "square.and.arrow.up")
                 .font(.title3)
