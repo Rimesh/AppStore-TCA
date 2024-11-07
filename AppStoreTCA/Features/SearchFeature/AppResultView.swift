@@ -11,6 +11,11 @@ struct AppResultView: View {
     private let app: AppApiModel
     @State private var isDownloading = false
 
+    @ScaledMetric(relativeTo: .caption2)
+    private var ratingSize: CGFloat = 4
+
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+
     public init(_ app: AppApiModel) {
         self.app = app
     }
@@ -35,14 +40,8 @@ struct AppResultView: View {
                     }
                 }
             }
-            HStack {
-                ratingView
-                Spacer()
-                developerView
-                Spacer()
-                genreView
-            }
-            .foregroundStyle(Color.secondary)
+            appInsightsView
+                .foregroundStyle(Color.secondary)
             screenshotsView
         }
         .padding(.vertical)
@@ -77,10 +76,10 @@ extension AppResultView {
         HStack(spacing: 0) {
             ForEach(0 ..< 5) { _ in
                 Image(systemName: "star.fill")
-                    .font(.system(size: 8))
+                    .font(.system(size: 10))
             }
             Text("1.3M")
-                .font(.footnote)
+                .font(.system(.footnote, design: .rounded, weight: .semibold))
         }
     }
 
@@ -89,6 +88,7 @@ extension AppResultView {
             Image(systemName: "person.crop.square")
             Text(app.sellerName)
                 .lineLimit(1)
+                .font(.system(.footnote, design: .rounded, weight: .semibold))
         }
         .font(.caption)
         .fontDesign(.rounded)
@@ -105,9 +105,40 @@ extension AppResultView {
                 )
             Text(app.primaryGenreName)
                 .lineLimit(1)
-                .font(.system(.caption, design: .rounded, weight: .medium))
+                .font(.system(.footnote, design: .rounded, weight: .semibold))
         }
         .fontDesign(.rounded)
+    }
+
+    @ViewBuilder
+    var appInsightsView: some View {
+        if dynamicTypeSize <= .xLarge {
+            HStack {
+                ratingView
+                Spacer()
+                developerView
+                Spacer()
+                genreView
+            }
+        } else if dynamicTypeSize >= .accessibility3 {
+            VStack(alignment: .leading) {
+                ratingView
+                Spacer()
+                developerView
+                Spacer()
+                genreView
+            }
+        } else {
+            VStack(alignment: .leading) {
+                HStack {
+                    ratingView
+                    Spacer()
+                    developerView
+                    Spacer()
+                }
+                genreView
+            }
+        }
     }
 
     var randomNumber: Int {
