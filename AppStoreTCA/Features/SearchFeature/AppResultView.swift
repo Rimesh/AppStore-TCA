@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AppResultView: View {
     private let app: AppApiModel
+    @State private var isDownloading = false
 
     public init(_ app: AppApiModel) {
         self.app = app
@@ -16,13 +17,23 @@ struct AppResultView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack(alignment: .center) {
+            AHStack(
+                hStackAlignment: .center,
+                hStackSpacing: 8,
+                vStackAlignment: .leading,
+                vStackSpacing: 10
+            ) {
                 appIconView
                     .frame(width: 64, height: 64)
                     .cornerRadius(12)
                 appTitleView
                 Spacer()
-                GetButton()
+                AVStack {
+                    GetButton(isDownloading: $isDownloading)
+                    if isDownloading == false {
+                        InAppPurchaseLabel(placement: .appResults)
+                    }
+                }
             }
             HStack {
                 ratingView
@@ -128,5 +139,18 @@ extension AppResultView {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.secondary, lineWidth: 1)
         )
+    }
+}
+
+#Preview {
+    ScrollView {
+        VStack {
+            AppResultView(.mock)
+            AppResultView(.mock)
+            AppResultView(.mock)
+            AppResultView(.mock)
+            AppResultView(.mock)
+        }
+        .padding()
     }
 }

@@ -8,22 +8,8 @@
 import SwiftUI
 
 struct CategoryTileView: View {
-    @Environment(\.sizeCategory) var sizeCategory
-
-    var scaleFactor: Double {
-        switch sizeCategory {
-        case .small: 0.8
-        case .medium: 0.9
-        case .large: 1
-        case .extraLarge: 1.1
-        case .extraExtraLarge: 1.2
-        case .extraExtraExtraLarge: 1.3
-        case .accessibilityMedium,
-             .accessibilityLarge, .accessibilityExtraLarge,
-             .accessibilityExtraExtraLarge, .accessibilityExtraExtraExtraLarge: 1.5
-        default: 1
-        }
-    }
+    @ScaledMetric(relativeTo: .headline)
+    private var imageSize = 60
 
     let category: Category
 
@@ -34,49 +20,53 @@ struct CategoryTileView: View {
     var body: some View {
         HStack {
             ZStack {
-                HStack {
-                    Spacer()
-                    Image(category.rawValue)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(
-                            width: 80 * scaleFactor,
-                            height: 80 * scaleFactor
-                        )
-                }
-                .padding()
-                HStack(alignment: .bottom) {
-                    VStack {
-                        Spacer()
-                        Text(category.rawValue.capitalized)
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(Color.white)
-                            .fixedSize()
-                    }
-                    Spacer()
-                }
-                .padding()
+                categoryTextView
+                categoryIconView
             }
         }
         .background {
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    category.gradientColor.opacity(0.7),
-                    category.gradientColor.opacity(1),
-                ]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
+            backgroundGradient
         }
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
-}
 
-#Preview() {
-    ScrollView {
-        ForEach(Category.allCases, id: \.self) { category in
-            CategoryTileView(category)
+    private var categoryTextView: some View {
+        HStack {
+            Spacer()
+            Image(category.rawValue)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(
+                    width: imageSize,
+                    height: imageSize
+                )
         }
+        .padding()
+    }
+
+    private var categoryIconView: some View {
+        HStack(alignment: .bottom) {
+            VStack {
+                Spacer()
+                Text(category.rawValue.capitalized)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(Color.white)
+                    .fixedSize()
+            }
+            Spacer()
+        }
+        .padding()
+    }
+
+    private var backgroundGradient: some View {
+        LinearGradient(
+            gradient: Gradient(colors: [
+                category.gradientColor.opacity(0.7),
+                category.gradientColor.opacity(1),
+            ]),
+            startPoint: .top,
+            endPoint: .bottom
+        )
     }
 }

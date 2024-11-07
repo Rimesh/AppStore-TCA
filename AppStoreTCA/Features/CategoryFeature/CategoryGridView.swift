@@ -29,14 +29,20 @@ struct CategoryGridView: View {
 extension CategoryGridView {
     private var columns: [GridItem] {
         var columnCount: Int {
-            switch sizeCategory {
-            case .extraExtraExtraLarge, .accessibilityMedium,
-                 .accessibilityLarge, .accessibilityExtraLarge,
-                 .accessibilityExtraExtraLarge, .accessibilityExtraExtraExtraLarge: 1
-            default: 2
-            }
+            sizeCategory > .large ? 1 : 2
         }
 
         return Array(repeating: .init(.flexible()), count: columnCount)
     }
+}
+
+#Preview() {
+    CategoryGridView(
+        store: Store(
+            initialState: CategoryFeature.State(),
+            reducer: {
+                CategoryFeature()
+            }
+        )
+    )
 }

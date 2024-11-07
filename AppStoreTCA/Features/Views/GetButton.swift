@@ -7,8 +7,12 @@
 import SwiftUI
 
 struct GetButton: View {
-    @State private var isDownloading = false
+    @Binding private var isDownloading: Bool
     @State private var progress: CGFloat = 0.0
+
+    init(isDownloading: Binding<Bool>) {
+        _isDownloading = isDownloading
+    }
 
     var body: some View {
         Button(action: {
@@ -18,20 +22,15 @@ struct GetButton: View {
                 CircularProgressView(progress: progress)
                     .frame(width: 32, height: 32)
             } else {
-                VStack {
-                    Text("Get")
-                        .font(.headline)
-                        .foregroundColor(.blue)
-                        .padding(.vertical, 4)
-                        .padding(.horizontal, 25)
-                        .background {
-                            Capsule()
-                                .foregroundStyle(Color.gray.opacity(0.25))
-                        }
-                    Text("In-App Purchases")
-                        .font(.system(size: 10, weight: .medium))
-                        .foregroundStyle(.secondary)
-                }
+                Text("Get")
+                    .font(.headline)
+                    .foregroundColor(.blue)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 25)
+                    .background {
+                        Capsule()
+                            .foregroundStyle(Color.gray.opacity(0.25))
+                    }
             }
         }
         .buttonStyle(PlainButtonStyle())
@@ -60,7 +59,7 @@ struct GetButton: View {
     }
 }
 
-struct CircularProgressView: View {
+private struct CircularProgressView: View {
     var progress: CGFloat
 
     var body: some View {
@@ -77,5 +76,5 @@ struct CircularProgressView: View {
 }
 
 #Preview() {
-    GetButton()
+    GetButton(isDownloading: .constant(false))
 }

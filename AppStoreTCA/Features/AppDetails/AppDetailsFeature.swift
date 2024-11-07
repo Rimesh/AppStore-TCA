@@ -64,7 +64,8 @@ struct AppDetailsView: View {
 
     private var downloadInfoView: some View {
         HStack(alignment: .bottom) {
-            GetButton()
+            GetButton(isDownloading: .constant(false))
+            InAppPurchaseLabel(placement: .appDetails)
             Spacer()
             Image(systemName: "square.and.arrow.up")
                 .font(.title3)

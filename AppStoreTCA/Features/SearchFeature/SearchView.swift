@@ -57,3 +57,19 @@ struct SearchView: View {
         }
     }
 }
+
+// #Preview {
+//    SearchView(
+//        store: Store(
+//            initialState: SearchFeature.State(
+//                results: [],
+//                searchQuery: "",
+//                categories: CategoryFeature.State(),
+//                isSearchbarActive: false,
+//                isLoading: false
+//            ), reducer: {
+//                SearchFeature()
+//            }
+//        )
+//    )
+// }
