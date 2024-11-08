@@ -14,7 +14,6 @@ struct SearchView: View {
     var body: some View {
         NavigationStack {
             contentView
-                .padding()
                 .navigationTitle("Search")
         }
         .searchable(
@@ -22,7 +21,6 @@ struct SearchView: View {
             isPresented: $store.isSearchbarActive.sending(\.searchbarFocusChanged),
             prompt: "Apps, Games and more"
         )
-        .overlay { overlayView }
         .task(id: store.searchQuery) {
             do {
                 try await Task.sleep(for: .milliseconds(500))
@@ -33,50 +31,29 @@ struct SearchView: View {
 
     @ViewBuilder
     var contentView: some View {
-        NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-            List {
-                ForEach(store.results) { app in
-                    NavigationLink(state: AppDetailsFeature.State(app: app)) {
-                        AppResultView(app)
-                    }
-                    .buttonStyle(.borderless)
-                    .listRowInsets(EdgeInsets())
-                    .listRowSeparator(.hidden)
-                }
-                if store.results.isEmpty && store.isSearchbarActive == false {
-                    CategoryGridView(store: store.scope(state: \.categories, action: \.categories))
-                        .listRowInsets(EdgeInsets())
-                        .listRowSeparator(.hidden)
-                }
-            }
-            .listStyle(PlainListStyle())
-        } destination: { store in
-            AppDetailsView(store: store)
-        }
-    }
-
-    @ViewBuilder
-    var overlayView: some View {
-        if store.isLoading {
-            ProgressView()
-        } else if store.isSearchbarActive && store.results.isEmpty {
+        switch store.contentState {
+        case .noResults:
             ContentUnavailableView.search(text: store.searchQuery)
+        case .categories:
+            CategoryGridView(store: store.scope(state: \.categories, action: \.categories))
+                .padding()
+        case let .results(apps):
+            NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
+                ScrollView(.vertical) {
+                    ForEach(apps) { app in
+                        NavigationLink(state: AppDetailsFeature.State(app: app)) {
+                            AppResultView(app)
+                                .padding()
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .contentShape(Rectangle())
+                    }
+                }
+            } destination: { store in
+                AppDetailsView(store: store)
+            }
+        case .loading:
+            ProgressView()
         }
     }
 }
-
-// #Preview {
-//    SearchView(
-//        store: Store(
-//            initialState: SearchFeature.State(
-//                results: [],
-//                searchQuery: "",
-//                categories: CategoryFeature.State(),
-//                isSearchbarActive: false,
-//                isLoading: false
-//            ), reducer: {
-//                SearchFeature()
-//            }
-//        )
-//    )
-// }

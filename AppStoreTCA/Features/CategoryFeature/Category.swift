@@ -7,10 +7,8 @@
 
 import SwiftUI
 
-enum Category: String, CaseIterable, Identifiable {
+enum Category: String, CaseIterable {
     case finance, music, social, shopping, photo, productivity, games, puzzle, utilities, travel
-
-    var id: String { rawValue }
 
     var gradientColor: Color {
         switch self {
@@ -22,3 +20,9 @@ enum Category: String, CaseIterable, Identifiable {
         }
     }
 }
+
+extension Category: Identifiable {
+    var id: String { rawValue }
+}
+
+extension Category: Equatable {}

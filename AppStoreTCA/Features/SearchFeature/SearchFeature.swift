@@ -16,8 +16,8 @@ struct SearchFeature {
         var searchQuery = ""
         var categories = CategoryFeature.State()
         var isSearchbarActive = false
-        var isLoading = false
         var path = StackState<AppDetailsFeature.State>()
+        var contentState: ContentState = .categories
     }
 
     enum Action {
@@ -29,6 +29,13 @@ struct SearchFeature {
         case path(StackAction<AppDetailsFeature.State, AppDetailsFeature.Action>)
     }
 
+    enum ContentState: Equatable {
+        case categories
+        case results([AppApiModel])
+        case loading
+        case noResults
+    }
+
     @Dependency(\.appStoreClient) var appStoreClient
     private enum CancelID { case appSearch }
 
@@ -37,12 +44,10 @@ struct SearchFeature {
         Reduce { state, action in
             switch action {
             case let .searchQueryChanged(query):
-                state.isLoading = true
                 state.searchQuery = query
                 // Cancel in-flight requests
                 guard !state.searchQuery.isEmpty else {
-                    state.results = []
-                    state.isLoading = false
+                    state.contentState = .noResults
                     return .cancel(id: CancelID.appSearch)
                 }
                 return .none
@@ -51,23 +56,22 @@ struct SearchFeature {
                 guard !state.searchQuery.isEmpty else {
                     return .none
                 }
+                state.contentState = .loading
                 return .run { [query = state.searchQuery] send in
                     await send(.searchResponse(Result { try await self.appStoreClient.search(query: query) }))
                 }
                 .cancellable(id: CancelID.appSearch)
 
             case .searchResponse(.failure):
-                state.isLoading = false
-                state.results = []
+                state.contentState = .noResults
                 return .none
 
             case let .searchResponse(.success(response)):
-                state.isLoading = false
                 state.results = response
+                state.contentState = response.isEmpty ? .noResults : .results(response)
                 return .none
 
             case let .categories(.delegate(.selectCategory(category))):
-                state.isLoading = true
                 state.isSearchbarActive = true
                 return .run { send in
                     await send(.searchQueryChanged(category.rawValue))
@@ -78,6 +82,9 @@ struct SearchFeature {
 
             case let .searchbarFocusChanged(isActive):
                 state.isSearchbarActive = isActive
+                if isActive == false {
+                    state.contentState = .categories
+                }
                 return .none
 
             case .path:
