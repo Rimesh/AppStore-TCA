@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct ScreenshotsView: View {
-    let screenshotUrls: [URL]
-
     private enum Constants {
         static let landscapeHeight: CGFloat = 175
         static let portraitRenderHeightSmall: CGFloat = 210
@@ -19,6 +17,8 @@ struct ScreenshotsView: View {
     }
 
     @State private var imageSize: CGSize = .zero
+
+    private let screenshotUrls: [URL]
     private let renderSize: RenderSize
 
     init(screenshotUrls: [URL], renderSize: RenderSize) {
