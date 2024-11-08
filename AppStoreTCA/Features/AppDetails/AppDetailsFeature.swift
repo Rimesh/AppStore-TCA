@@ -13,9 +13,22 @@ struct AppDetailsFeature {
     @ObservableState
     struct State: Equatable {
         let app: AppApiModel
+        var showAppDescription: Bool = false
     }
 
-    enum Action {}
+    enum Action {
+        case descriptionButtonTapped
+    }
+
+    var body: some ReducerOf<Self> {
+        Reduce { state, action in
+            switch action {
+            case .descriptionButtonTapped:
+                state.showAppDescription = true
+                return .none
+            }
+        }
+    }
 }
 
 struct AppDetailsView: View {
@@ -49,6 +62,10 @@ struct AppDetailsView: View {
                     renderSize: .large
                 )
                 .padding()
+                Divider()
+                    .padding(.horizontal)
+                appDescriptionView
+                    .padding(.horizontal)
                 Spacer()
             }
         }
@@ -100,7 +117,6 @@ struct AppDetailsView: View {
         VStack {
             Divider()
                 .padding(.horizontal)
-                .frame(height: 1)
             ScrollView(.horizontal) {
                 HStack(spacing: .zero) {
                     ratingStack
@@ -149,6 +165,26 @@ struct AppDetailsView: View {
             bottomView: { Text("MB") },
             trailingSeparatorHidden: true
         )
+    }
+
+    private var appDescriptionView: some View {
+        ZStack {
+            Text(store.app.description)
+                .lineLimit(store.showAppDescription ? nil : 3)
+            if store.showAppDescription == false {
+                Button {
+                    store.send(.descriptionButtonTapped)
+                } label: {
+                    VStack {
+                        Spacer()
+                        HStack {
+                            Spacer()
+                            LeadingGradientLabel("more")
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -61,15 +61,14 @@ struct ScreenshotsView: View {
                                 )
                         case .empty:
                             ProgressView()
-                            .frame(
-                                width: UIScreen.main.bounds.width / 3,
-                                height: Constants.portraitRenderHeightSmall
-                            )
+                                .frame(
+                                    width: UIScreen.main.bounds.width / 3,
+                                    height: Constants.portraitRenderHeightSmall
+                                )
                         default:
                             EmptyView()
                         }
                     }
-                    
                 }
             }
         }
