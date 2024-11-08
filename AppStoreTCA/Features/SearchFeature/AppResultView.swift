@@ -44,7 +44,6 @@ struct AppResultView: View {
                 .foregroundStyle(Color.secondary)
             screenshotsView
         }
-        .padding(.vertical)
     }
 }
 
@@ -146,29 +145,9 @@ extension AppResultView {
     }
 
     var screenshotsView: some View {
-        HStack {
-            ForEach(app.screenshotUrls.prefix(3), id: \.self) { url in
-                screenshotView(url: url)
-            }
-        }
-    }
-
-    @ViewBuilder
-    func screenshotView(url: URL) -> some View {
-        AsyncImage(url: url) { phase in
-            switch phase {
-            case let .success(image):
-                image.resizable()
-                    .aspectRatio(contentMode: .fit)
-            default:
-                EmptyView()
-            }
-        }
-        .frame(height: 210)
-        .cornerRadius(12)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.secondary, lineWidth: 1)
+        ScreenshotsView(
+            screenshotUrls: Array(app.screenshotUrls.prefix(3)),
+            renderSize: .small
         )
     }
 }

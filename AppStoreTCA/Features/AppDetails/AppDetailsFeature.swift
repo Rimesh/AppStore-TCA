@@ -29,22 +29,28 @@ struct AppDetailsView: View {
     private var appMetricsStackSpacing: CGFloat = 10
 
     var body: some View {
-        VStack {
-            AHStack(hStackAlignment: .top,
-                    vStackAlignment: .leading)
-            {
-                appIcon
-                VStack(alignment: .leading) {
-                    appTitleView
-                    Spacer()
-                        .frame(height: sizeCategory.isAccessibilityCategory ? 8 : titleSpacing)
-                    downloadInfoView
+        ScrollView(.vertical) {
+            VStack {
+                AHStack(hStackAlignment: .top,
+                        vStackAlignment: .leading)
+                {
+                    appIcon
+                    VStack(alignment: .leading) {
+                        appTitleView
+                        Spacer()
+                            .frame(height: sizeCategory.isAccessibilityCategory ? 8 : titleSpacing)
+                        downloadInfoView
+                    }
                 }
+                .padding()
+                appMetricsView
+                ScreenshotsView(
+                    screenshotUrls: store.app.screenshotUrls,
+                    renderSize: .large
+                )
+                .padding()
+                Spacer()
             }
-            .padding()
-            appMetricsView
-
-            Spacer()
         }
     }
 
