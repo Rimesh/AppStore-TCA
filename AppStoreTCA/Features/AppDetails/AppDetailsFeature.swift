@@ -66,6 +66,10 @@ struct AppDetailsView: View {
         }
         .frame(width: 120, height: 120)
         .cornerRadius(24)
+        .overlay(
+            RoundedRectangle(cornerRadius: 24)
+                .stroke(Color.secondary.opacity(0.5), lineWidth: 1)
+        )
     }
 
     private var appTitleView: some View {

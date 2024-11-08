@@ -49,20 +49,27 @@ struct ScreenshotsView: View {
                                 .background(GeometryReader { geometry in
                                     Color.clear.preference(key: ImageSizeKey.self, value: geometry.size)
                                 })
+                                .onPreferenceChange(ImageSizeKey.self) { newValue in
+                                    imageSize = newValue
+                                }
+                                .aspectRatio(contentMode: .fit)
+                                .frame(height: getFrameHeight())
+                                .cornerRadius(cornerRadius)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: cornerRadius)
+                                        .stroke(Color.secondary.opacity(0.5), lineWidth: 1)
+                                )
+                        case .empty:
+                            ProgressView()
+                            .frame(
+                                width: UIScreen.main.bounds.width / 3,
+                                height: Constants.portraitRenderHeightSmall
+                            )
                         default:
                             EmptyView()
                         }
                     }
-                    .onPreferenceChange(ImageSizeKey.self) { newValue in
-                        imageSize = newValue
-                    }
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: getFrameHeight())
-                    .cornerRadius(cornerRadius)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: cornerRadius)
-                            .stroke(Color.secondary.opacity(0.5), lineWidth: 1)
-                    )
+                    
                 }
             }
         }
