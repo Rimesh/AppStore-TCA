@@ -23,6 +23,7 @@ struct CategoryGridView: View {
                 }
             }
         }
+        .scrollIndicators(.hidden)
     }
 }
 
