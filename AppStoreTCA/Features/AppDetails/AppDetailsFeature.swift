@@ -25,6 +25,9 @@ struct AppDetailsView: View {
     @ScaledMetric(relativeTo: .headline)
     private var titleSpacing: CGFloat = 28
 
+    @ScaledMetric(relativeTo: .caption)
+    private var appMetricsStackSpacing: CGFloat = 10
+
     var body: some View {
         VStack {
             AHStack(hStackAlignment: .top,
@@ -39,6 +42,9 @@ struct AppDetailsView: View {
                 }
             }
             .padding()
+            appMetricsView
+
+            Spacer()
         }
     }
 
@@ -78,6 +84,61 @@ struct AppDetailsView: View {
                 .font(.title3)
                 .foregroundStyle(Color.blue)
         }
+    }
+
+    private var appMetricsView: some View {
+        VStack {
+            Divider()
+                .padding(.horizontal)
+                .frame(height: 1)
+            ScrollView(.horizontal) {
+                HStack(spacing: .zero) {
+                    ratingStack
+                    ageRestrictionStack
+                    supportedLanguagesStack
+                    appSizeStack
+                }
+            }
+            .scrollIndicators(.hidden)
+        }
+    }
+
+    private var ratingStack: some View {
+        AppMetricVStack(
+            topView: { Text("RATINGS") },
+            middleView: { Text("3.8") },
+            bottomView: {
+                HStack(spacing: 0) {
+                    Image(systemName: "star")
+                    Image(systemName: "star")
+                }
+            }
+        )
+    }
+
+    private var ageRestrictionStack: some View {
+        AppMetricVStack(
+            topView: { Text("AGE") },
+            middleView: { Text("17+") },
+            bottomView: { Text("Years Old") }
+        )
+    }
+
+    private var supportedLanguagesStack: some View {
+        AppMetricVStack(
+            topView: { Text("LANGUAGE") },
+            middleView: { Text("EN") },
+            bottomView: { Text("+9 More") }
+        )
+    }
+
+    private var appSizeStack: some View {
+        AppMetricVStack(
+            topView: { Text("SIZE") },
+            middleView: { Text("3,21") },
+            bottomView: { Text("MB") },
+            trailingSeparatorHidden: true
+        )
     }
 }
 

@@ -33,19 +33,26 @@ struct SearchView: View {
 
     @ViewBuilder
     var contentView: some View {
-        List {
-            ForEach(store.results) { app in
-                AppResultView(app)
+        NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
+            List {
+                ForEach(store.results) { app in
+                    NavigationLink(state: AppDetailsFeature.State(app: app)) {
+                        AppResultView(app)
+                    }
+                    .buttonStyle(.borderless)
                     .listRowInsets(EdgeInsets())
                     .listRowSeparator(.hidden)
+                }
+                if store.results.isEmpty && store.isSearchbarActive == false {
+                    CategoryGridView(store: store.scope(state: \.categories, action: \.categories))
+                        .listRowInsets(EdgeInsets())
+                        .listRowSeparator(.hidden)
+                }
             }
-            if store.results.isEmpty && store.isSearchbarActive == false {
-                CategoryGridView(store: store.scope(state: \.categories, action: \.categories))
-                    .listRowInsets(EdgeInsets())
-                    .listRowSeparator(.hidden)
-            }
+            .listStyle(PlainListStyle())
+        } destination: { store in
+            AppDetailsView(store: store)
         }
-        .listStyle(PlainListStyle())
     }
 
     @ViewBuilder

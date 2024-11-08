@@ -17,6 +17,7 @@ struct SearchFeature {
         var categories = CategoryFeature.State()
         var isSearchbarActive = false
         var isLoading = false
+        var path = StackState<AppDetailsFeature.State>()
     }
 
     enum Action {
@@ -25,6 +26,7 @@ struct SearchFeature {
         case searchResponse(Result<[AppApiModel], any Error>)
         case categories(CategoryFeature.Action)
         case searchbarFocusChanged(Bool)
+        case path(StackAction<AppDetailsFeature.State, AppDetailsFeature.Action>)
     }
 
     @Dependency(\.appStoreClient) var appStoreClient
@@ -77,7 +79,13 @@ struct SearchFeature {
             case let .searchbarFocusChanged(isActive):
                 state.isSearchbarActive = isActive
                 return .none
+
+            case .path:
+                return .none
             }
+        }
+        .forEach(\.path, action: \.path) {
+            AppDetailsFeature()
         }
     }
 }
