@@ -14,6 +14,11 @@ struct AppResultView: View {
     @ScaledMetric(relativeTo: .caption2)
     private var ratingSize: CGFloat = 4
 
+    @ScaledMetric(relativeTo: .footnote)
+    private var genreSize: CGFloat = 8
+    @ScaledMetric(relativeTo: .footnote)
+    private var genrePadding: CGFloat = 2
+
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
 
     public init(_ app: AppApiModel) {
@@ -96,8 +101,8 @@ extension AppResultView {
     var genreView: some View {
         HStack {
             Text("No. \(randomNumber)")
-                .font(.system(size: 8, weight: .medium, design: .rounded))
-                .padding(.all, 2)
+                .font(.system(size: genreSize, weight: .medium, design: .rounded))
+                .padding(.all, genrePadding)
                 .background(
                     RoundedRectangle(cornerRadius: 4)
                         .stroke(Color.secondary, lineWidth: 1)
