@@ -104,7 +104,7 @@ struct AppDetailsView: View {
         HStack(alignment: .center) {
             AHStack(vStackAlignment: .leading) {
                 GetButton(isDownloading: .constant(false))
-                InAppPurchaseLabel(placement: .appDetails)
+                InAppPurchaseLabel(placement: .naturalVertical)
             }
             Spacer()
             Image(systemName: "square.and.arrow.up")

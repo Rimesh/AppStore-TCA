@@ -17,9 +17,11 @@ struct InAppPurchaseLabel: View {
         self.placement = placement
     }
 
+    /// naturalHorizontal: HStack natural alignment, when using accessibility switches to VStack
+    /// naturalVertical: VStack natural alignment, when using accessibility switches to HStack
     enum Placement {
-        case appResults
-        case appDetails
+        case naturalHorizontal
+        case naturalVertical
     }
 
     var body: some View {
@@ -29,12 +31,12 @@ struct InAppPurchaseLabel: View {
     @ViewBuilder
     var contentView: some View {
         switch placement {
-        case .appResults: accessibleHStack
-        case .appDetails: accessibleVStack
+        case .naturalHorizontal: horizontallyPlacedViews
+        case .naturalVertical: verticallyPlacedViews
         }
     }
 
-    var accessibleHStack: some View {
+    private var horizontallyPlacedViews: some View {
         AHStack(
             hStackAlignment: .center,
             hStackSpacing: nil,
@@ -44,12 +46,14 @@ struct InAppPurchaseLabel: View {
             Text("In-App")
             Text("Purchases")
         }
+        .lineLimit(1)
         .font(.system(size: textSize, weight: .medium))
+        .minimumScaleFactor(0.75)
         .foregroundStyle(.secondary)
         .fixedSize()
     }
 
-    var accessibleVStack: some View {
+    var verticallyPlacedViews: some View {
         AVStack(
             hStackAlignment: .center,
             hStackSpacing: nil,
@@ -59,7 +63,10 @@ struct InAppPurchaseLabel: View {
             Text("In-App")
             Text("Purchases")
         }
+        .lineLimit(1)
         .font(.system(size: textSize, weight: .medium))
+        .minimumScaleFactor(0.75)
         .foregroundStyle(.secondary)
+        .fixedSize()
     }
 }
