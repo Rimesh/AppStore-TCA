@@ -46,6 +46,7 @@ struct InAppPurchaseLabel: View {
         }
         .font(.system(size: textSize, weight: .medium))
         .foregroundStyle(.secondary)
+        .fixedSize()
     }
 
     var accessibleVStack: some View {

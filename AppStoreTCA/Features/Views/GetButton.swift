@@ -10,6 +10,9 @@ struct GetButton: View {
     @Binding private var isDownloading: Bool
     @State private var progress: CGFloat = 0.0
 
+    @ScaledMetric(relativeTo: .caption)
+    private var horizontalPadding: CGFloat = 18
+
     init(isDownloading: Binding<Bool>) {
         _isDownloading = isDownloading
     }
@@ -26,7 +29,8 @@ struct GetButton: View {
                     .font(.headline)
                     .foregroundColor(.blue)
                     .padding(.vertical, 4)
-                    .padding(.horizontal, 25)
+                    .padding(.horizontal, horizontalPadding)
+                    .fixedSize()
                     .background {
                         Capsule()
                             .foregroundStyle(Color.gray.opacity(0.25))

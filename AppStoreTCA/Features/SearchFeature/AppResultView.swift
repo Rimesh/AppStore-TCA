@@ -33,7 +33,7 @@ struct AppResultView: View {
                     .cornerRadius(12)
                 appTitleView
                 Spacer()
-                AVStack {
+                AVStack(hStackSpacing: 8) {
                     GetButton(isDownloading: $isDownloading)
                     if isDownloading == false {
                         InAppPurchaseLabel(placement: .appResults)
