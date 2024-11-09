@@ -34,8 +34,6 @@ struct AppResultView: View {
                 vStackSpacing: 10
             ) {
                 appIconView
-                    .frame(width: 64, height: 64)
-                    .cornerRadius(12)
                 appTitleView
                 Spacer()
                 AVStack(hStackSpacing: 8) {
@@ -52,16 +50,24 @@ struct AppResultView: View {
     }
 }
 
-extension AppResultView {
+private extension AppResultView {
     var appIconView: some View {
         AsyncImage(url: app.artworkUrl100) { phase in
             switch phase {
+            case .empty:
+                ProgressView()
             case let .success(image):
                 image.resizable()
+                    .cornerRadius(12)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.secondary.opacity(0.25), lineWidth: 1)
+                    )
             default:
                 EmptyView()
             }
         }
+        .frame(width: 64, height: 64)
     }
 
     var appTitleView: some View {

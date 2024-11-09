@@ -30,7 +30,7 @@ struct SearchView: View {
     }
 
     @ViewBuilder
-    var contentView: some View {
+    private var contentView: some View {
         switch store.contentState {
         case .noResults:
             ContentUnavailableView.search(text: store.searchQuery)

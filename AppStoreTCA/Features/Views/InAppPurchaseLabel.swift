@@ -53,7 +53,7 @@ struct InAppPurchaseLabel: View {
         .fixedSize()
     }
 
-    var verticallyPlacedViews: some View {
+    private var verticallyPlacedViews: some View {
         AVStack(
             hStackAlignment: .center,
             hStackSpacing: nil,

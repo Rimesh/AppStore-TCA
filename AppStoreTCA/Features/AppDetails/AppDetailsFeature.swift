@@ -85,7 +85,7 @@ struct AppDetailsView: View {
         .cornerRadius(24)
         .overlay(
             RoundedRectangle(cornerRadius: 24)
-                .stroke(Color.secondary.opacity(0.5), lineWidth: 1)
+                .stroke(Color.secondary.opacity(0.25), lineWidth: 1)
         )
     }
 
