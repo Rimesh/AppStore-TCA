@@ -1,5 +1,5 @@
 //
-//  SearchAppsTests.swift
+//  SearchFeatureTests.swift
 //  AppStoreTCA
 //
 //  Created by Rimesh Jotaniya on 05/11/24.
@@ -69,6 +69,23 @@ struct SearchFeatureTests {
         }
         await store.receive(\.searchQueryChanged, "music") {
             $0.searchQuery = "music"
+        }
+    }
+
+    @Test func navigateToAppDetailsAndDismiss() async throws {
+        let store = TestStore(initialState: SearchFeature.State()) {
+            SearchFeature()
+        }
+        let appDetailState = AppDetailsFeature.State(app: .mock)
+
+        // Test Push Navigation
+        await store.send(.path(.push(id: 0, state: appDetailState))) {
+            $0.path.append(appDetailState)
+        }
+
+        // test Pop Navigation
+        await store.send(.path(.popFrom(id: 0))) {
+            _ = $0.path.popLast()
         }
     }
 }
