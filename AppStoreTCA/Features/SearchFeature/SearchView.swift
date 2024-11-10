@@ -37,12 +37,12 @@ struct SearchView: View {
         case .categories:
             CategoryGridView(store: store.scope(state: \.categories, action: \.categories))
                 .padding()
-        case let .results(apps):
+        case .appResults:
             NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
                 ScrollView(.vertical) {
-                    ForEach(apps) { app in
-                        NavigationLink(state: AppDetailsFeature.State(app: app)) {
-                            AppResultView(app)
+                    ForEach(store.scope(state: \.appResults, action: \.appResults)) { store in
+                        NavigationLink(state: AppDetailsFeature.State(app: store.app)) {
+                            AppResultView(store: store)
                                 .padding()
                         }
                         .buttonStyle(PlainButtonStyle())

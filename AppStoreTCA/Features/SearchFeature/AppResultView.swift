@@ -4,11 +4,31 @@
 //
 //  Created by Rimesh Jotaniya on 04/11/24.
 //
-
+import ComposableArchitecture
 import SwiftUI
 
+@Reducer
+struct AppResultFeature {
+    @ObservableState struct State: Equatable, Identifiable {
+        var id: Int { app.id }
+        var app: AppApiModel
+        var downloadApp: DownloadFeature.State
+    }
+
+    enum Action: Equatable {
+        case downloadApp(DownloadFeature.Action)
+    }
+
+    var body: some ReducerOf<Self> {
+        Scope(state: \.downloadApp, action: \.downloadApp) { DownloadFeature() }
+        Reduce { _, _ in
+            .none
+        }
+    }
+}
+
 struct AppResultView: View {
-    private let app: AppApiModel
+    let store: StoreOf<AppResultFeature>
     @State private var isDownloading = false
 
     @ScaledMetric(relativeTo: .caption2)
@@ -20,10 +40,6 @@ struct AppResultView: View {
     private var genrePadding: CGFloat = 2
 
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
-
-    public init(_ app: AppApiModel) {
-        self.app = app
-    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -52,7 +68,7 @@ struct AppResultView: View {
 
 private extension AppResultView {
     var appIconView: some View {
-        AsyncImage(url: app.artworkUrl100) { phase in
+        AsyncImage(url: store.app.artworkUrl100) { phase in
             switch phase {
             case .empty:
                 ProgressView()
@@ -72,10 +88,10 @@ private extension AppResultView {
 
     var appTitleView: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(app.trackName)
+            Text(store.app.trackName)
                 .lineLimit(1)
                 .font(.headline)
-            Text(app.artistName)
+            Text(store.app.artistName)
                 .lineLimit(1)
                 .font(.subheadline)
                 .foregroundStyle(Color.secondary)
@@ -96,7 +112,7 @@ private extension AppResultView {
     var developerView: some View {
         HStack {
             Image(systemName: "person.crop.square")
-            Text(app.sellerName)
+            Text(store.app.sellerName)
                 .lineLimit(1)
                 .font(.system(.footnote, design: .rounded, weight: .semibold))
         }
@@ -113,7 +129,7 @@ private extension AppResultView {
                     RoundedRectangle(cornerRadius: 4)
                         .stroke(Color.secondary, lineWidth: 1)
                 )
-            Text(app.primaryGenreName)
+            Text(store.app.primaryGenreName)
                 .lineLimit(1)
                 .font(.system(.footnote, design: .rounded, weight: .semibold))
         }
@@ -157,7 +173,7 @@ private extension AppResultView {
 
     var screenshotsView: some View {
         ScreenshotsView(
-            screenshotUrls: Array(app.screenshotUrls.prefix(3)),
+            screenshotUrls: Array(store.app.screenshotUrls.prefix(3)),
             renderSize: .small
         )
     }
@@ -166,11 +182,45 @@ private extension AppResultView {
 #Preview {
     ScrollView {
         VStack {
-            AppResultView(.mock)
-            AppResultView(.mock)
-            AppResultView(.mock)
-            AppResultView(.mock)
-            AppResultView(.mock)
+            AppResultView(
+                store: .init(
+                    initialState: AppResultFeature.State(
+                        app: .mock,
+                        downloadApp: DownloadFeature.State(
+                            purchaseLabelPosition: .vertial
+                        )
+                    ),
+                    reducer: {
+                        AppResultFeature()
+                    }
+                )
+            )
+            AppResultView(
+                store: .init(
+                    initialState: AppResultFeature.State(
+                        app: .mock,
+                        downloadApp: DownloadFeature.State(
+                            purchaseLabelPosition: .vertial
+                        )
+                    ),
+                    reducer: {
+                        AppResultFeature()
+                    }
+                )
+            )
+            AppResultView(
+                store: .init(
+                    initialState: AppResultFeature.State(
+                        app: .mock,
+                        downloadApp: DownloadFeature.State(
+                            purchaseLabelPosition: .vertial
+                        )
+                    ),
+                    reducer: {
+                        AppResultFeature()
+                    }
+                )
+            )
         }
         .padding()
     }

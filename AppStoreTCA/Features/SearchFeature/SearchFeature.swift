@@ -6,13 +6,14 @@
 //
 
 import ComposableArchitecture
+import Foundation
 import SwiftUI
 
 @Reducer
 struct SearchFeature {
     @ObservableState
     struct State: Equatable {
-        var results: [AppApiModel] = []
+        var appResults: IdentifiedArrayOf<AppResultFeature.State> = []
         var searchQuery = ""
         var categories = CategoryFeature.State()
         var isSearchbarActive = false
@@ -27,11 +28,12 @@ struct SearchFeature {
         case categories(CategoryFeature.Action)
         case searchbarFocusChanged(Bool)
         case path(StackAction<AppDetailsFeature.State, AppDetailsFeature.Action>)
+        case appResults(IdentifiedActionOf<AppResultFeature>)
     }
 
     enum ContentState: Equatable {
         case categories
-        case results([AppApiModel])
+        case appResults
         case loading
         case noResults
     }
@@ -41,7 +43,9 @@ struct SearchFeature {
 
     var body: some Reducer<State, Action> {
         Scope(state: \.categories, action: \.categories) { CategoryFeature() }
-        Reduce { state, action in
+        Reduce {
+            state,
+                action in
             switch action {
             case let .searchQueryChanged(query):
                 state.searchQuery = query
@@ -67,8 +71,13 @@ struct SearchFeature {
                 return .none
 
             case let .searchResponse(.success(response)):
-                state.results = response
-                state.contentState = response.isEmpty ? .noResults : .results(response)
+                state.appResults = IdentifiedArrayOf(uniqueElements: response.map {
+                    AppResultFeature.State(
+                        app: $0,
+                        downloadApp: .init(purchaseLabelPosition: .vertial)
+                    )
+                })
+                state.contentState = response.isEmpty ? .noResults : .appResults
                 return .none
 
             case let .categories(.delegate(.selectCategory(category))):
@@ -89,7 +98,13 @@ struct SearchFeature {
 
             case .path:
                 return .none
+
+            case .appResults:
+                return .none
             }
+        }
+        .forEach(\.appResults, action: \.appResults) {
+            AppResultFeature()
         }
         .forEach(\.path, action: \.path) {
             AppDetailsFeature()
