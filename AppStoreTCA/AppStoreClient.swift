@@ -41,7 +41,7 @@ extension AppStoreClient: DependencyKey {
                 URLQueryItem(name: "media", value: "software"),
             ]
             let (data, _) = try await URLSession.shared.data(from: components.url!)
-            let searchResults = try JSONDecoder().decode(SearchApiModel.self, from: data)
+            let searchResults = try JSONDecoder().decode(SearchResponse.self, from: data)
             return searchResults.results
         }
     )
