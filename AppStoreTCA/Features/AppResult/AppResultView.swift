@@ -9,11 +9,9 @@ import SwiftUI
 
 struct AppResultView: View {
     let store: StoreOf<AppResultFeature>
-    @State private var isDownloading = false
 
     @ScaledMetric(relativeTo: .caption2)
     private var ratingSize: CGFloat = 4
-
     @ScaledMetric(relativeTo: .footnote)
     private var genreSize: CGFloat = 8
     @ScaledMetric(relativeTo: .footnote)
@@ -32,12 +30,9 @@ struct AppResultView: View {
                 appIconView
                 appTitleView
                 Spacer()
-                AVStack(hStackSpacing: 8) {
-                    GetButton(isDownloading: $isDownloading)
-                    if isDownloading == false {
-                        InAppPurchaseLabel(placement: .naturalHorizontal)
-                    }
-                }
+                DownloadAppView(
+                    store: store.scope(state: \.downloadApp, action: \.downloadApp)
+                )
             }
             appInsightsView
                 .foregroundStyle(Color.secondary)

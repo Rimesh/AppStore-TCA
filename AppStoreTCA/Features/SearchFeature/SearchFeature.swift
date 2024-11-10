@@ -74,7 +74,7 @@ struct SearchFeature {
                 state.appResults = IdentifiedArrayOf(uniqueElements: response.map {
                     AppResultFeature.State(
                         app: $0,
-                        downloadApp: .init(purchaseLabelPosition: .vertial)
+                        downloadApp: .init(purchaseLabelPosition: .horizontal)
                     )
                 })
                 state.contentState = response.isEmpty ? .noResults : .appResults

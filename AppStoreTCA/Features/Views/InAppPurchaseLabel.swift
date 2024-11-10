@@ -39,7 +39,7 @@ struct InAppPurchaseLabel: View {
     private var horizontallyPlacedViews: some View {
         AHStack(
             hStackAlignment: .center,
-            hStackSpacing: nil,
+            hStackSpacing: 2,
             vStackAlignment: .leading,
             vStackSpacing: nil
         ) {
@@ -56,7 +56,7 @@ struct InAppPurchaseLabel: View {
     private var verticallyPlacedViews: some View {
         AVStack(
             hStackAlignment: .center,
-            hStackSpacing: nil,
+            hStackSpacing: 2,
             vStackAlignment: .leading,
             vStackSpacing: nil
         ) {

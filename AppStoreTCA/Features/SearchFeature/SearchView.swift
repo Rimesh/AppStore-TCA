@@ -41,7 +41,12 @@ struct SearchView: View {
             NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
                 ScrollView(.vertical) {
                     ForEach(store.scope(state: \.appResults, action: \.appResults)) { store in
-                        NavigationLink(state: AppDetailsFeature.State(app: store.app)) {
+                        NavigationLink(
+                            state: AppDetailsFeature.State(
+                                app: store.app,
+                                downloadApp: store.downloadApp
+                            )
+                        ) {
                             AppResultView(store: store)
                                 .padding()
                         }
