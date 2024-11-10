@@ -32,8 +32,15 @@ struct SearchFeatureTests {
             $0.contentState = .loading
         }
         await store.receive(\.searchResponse) {
-            $0.results = .mock
-            $0.contentState = .results(.mock)
+            $0.appResults = IdentifiedArrayOf(
+                uniqueElements: [AppModel].mock.map {
+                    AppResultFeature.State(
+                        app: $0,
+                        downloadApp: .init(purchaseLabelPosition: .horizontal)
+                    )
+                }
+            )
+            $0.contentState = .appResults
         }
     }
 
@@ -76,7 +83,10 @@ struct SearchFeatureTests {
         let store = TestStore(initialState: SearchFeature.State()) {
             SearchFeature()
         }
-        let appDetailState = AppDetailsFeature.State(app: .mock)
+        let appDetailState = AppDetailsFeature.State(
+            app: .mock,
+            downloadApp: .init(purchaseLabelPosition: .vertical)
+        )
 
         // Test Push Navigation
         await store.send(.path(.push(id: 0, state: appDetailState))) {

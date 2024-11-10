@@ -15,7 +15,12 @@ import Testing
 struct AppDetailsFeatureTests {
     @Test
     func showAppDescription() async {
-        let store = TestStore(initialState: AppDetailsFeature.State(app: .mock)) {
+        let store = TestStore(
+            initialState: AppDetailsFeature.State(
+                app: .mock,
+                downloadApp: .init(purchaseLabelPosition: .vertical)
+            )
+        ) {
             AppDetailsFeature()
         }
 

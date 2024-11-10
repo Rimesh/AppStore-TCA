@@ -26,7 +26,7 @@ struct DownloadAppView: View {
             }
             .buttonStyle(PlainButtonStyle())
         case let .downloading(progress):
-            CircularProgressView(progress: progress)
+            CircularProgressView(progress: CGFloat(progress))
                 .frame(width: 32, height: 32)
         case .downloaded:
             AVStack(hStackSpacing: 8) {

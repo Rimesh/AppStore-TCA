@@ -17,7 +17,7 @@ struct DownloadFeature {
 
         enum DownloadStaus: Equatable {
             case downloadable
-            case downloading(progress: CGFloat)
+            case downloading(progress: Float)
             case downloaded
         }
 
