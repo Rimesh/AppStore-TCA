@@ -11,14 +11,6 @@ import SwiftUI
 struct AppStoreTCAApp: App {
     var body: some Scene {
         WindowGroup {
-//            DownloadAppView(
-//                store: Store(
-//                    initialState: DownloadFeature.State(
-//                        status: .downloadable,
-//                        purchaseLabelPosition: .horizontal),
-//                    reducer: { DownloadFeature()._printChanges() }
-//                )
-//            )
             SearchView(
                 store: Store(
                     initialState: SearchFeature.State()
