@@ -9,5 +9,5 @@ import Foundation
 
 struct SearchApiModel: Decodable {
     let resultCount: Int
-    let results: [AppApiModel]
+    let results: [AppModel]
 }

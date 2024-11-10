@@ -11,7 +11,7 @@ import Foundation
 
 @DependencyClient
 struct AppStoreClient {
-    var search: @Sendable (_ query: String) async throws -> [AppApiModel]
+    var search: @Sendable (_ query: String) async throws -> [AppModel]
 }
 
 extension AppStoreClient: TestDependencyKey {
@@ -49,16 +49,16 @@ extension AppStoreClient: DependencyKey {
 
 // MARK: - Mock data
 
-extension Array where Element == AppApiModel {
+extension Array where Element == AppModel {
     static let mock = [
-        AppApiModel.mock,
-        AppApiModel.mock,
-        AppApiModel.mock,
+        AppModel.mock,
+        AppModel.mock,
+        AppModel.mock,
     ]
 }
 
-extension AppApiModel {
-    static let mock = AppApiModel(
+extension AppModel {
+    static let mock = AppModel(
         trackId: 368_677_368,
         trackName: "Uber - Request a ride",
         artistId: 368_677_371,

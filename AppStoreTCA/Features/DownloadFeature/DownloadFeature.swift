@@ -22,7 +22,7 @@ struct DownloadFeature {
         }
 
         enum IAPLabelPosition: Equatable {
-            case vertial
+            case vertical
             case horizontal
         }
     }

@@ -55,7 +55,7 @@ struct DownloadAppView: View {
     private var inAppPurchaseLabel: some View {
         switch store.purchaseLabelPosition {
         case .horizontal: InAppPurchaseLabel(placement: .naturalHorizontal)
-        case .vertial: InAppPurchaseLabel(placement: .naturalVertical)
+        case .vertical: InAppPurchaseLabel(placement: .naturalVertical)
         }
     }
 }

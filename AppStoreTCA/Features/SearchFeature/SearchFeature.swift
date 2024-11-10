@@ -24,7 +24,7 @@ struct SearchFeature {
     enum Action {
         case searchQueryChanged(String)
         case searchQueryChangeDebounced
-        case searchResponse(Result<[AppApiModel], any Error>)
+        case searchResponse(Result<[AppModel], any Error>)
         case categories(CategoryFeature.Action)
         case searchbarFocusChanged(Bool)
         case path(StackAction<AppDetailsFeature.State, AppDetailsFeature.Action>)

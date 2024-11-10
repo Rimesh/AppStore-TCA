@@ -86,7 +86,7 @@ struct ScreenshotsView: View {
 
 #Preview {
     ScreenshotsView(
-        screenshotUrls: AppApiModel.mock.screenshotUrls, renderSize: .large
+        screenshotUrls: AppModel.mock.screenshotUrls, renderSize: .large
     )
 }
 

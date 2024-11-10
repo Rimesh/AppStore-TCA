@@ -12,7 +12,7 @@ import SwiftUI
 struct AppDetailsFeature {
     @ObservableState
     struct State: Equatable {
-        let app: AppApiModel
+        let app: AppModel
         var showAppDescription: Bool = false
         var downloadApp: DownloadFeature.State
     }

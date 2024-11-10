@@ -162,7 +162,7 @@ private extension AppResultView {
                     initialState: AppResultFeature.State(
                         app: .mock,
                         downloadApp: DownloadFeature.State(
-                            purchaseLabelPosition: .vertial
+                            purchaseLabelPosition: .vertical
                         )
                     ),
                     reducer: {
@@ -175,7 +175,7 @@ private extension AppResultView {
                     initialState: AppResultFeature.State(
                         app: .mock,
                         downloadApp: DownloadFeature.State(
-                            purchaseLabelPosition: .vertial
+                            purchaseLabelPosition: .vertical
                         )
                     ),
                     reducer: {
@@ -188,7 +188,7 @@ private extension AppResultView {
                     initialState: AppResultFeature.State(
                         app: .mock,
                         downloadApp: DownloadFeature.State(
-                            purchaseLabelPosition: .vertial
+                            purchaseLabelPosition: .vertical
                         )
                     ),
                     reducer: {

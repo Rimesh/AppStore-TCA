@@ -1,12 +1,12 @@
 //
-//  AppApiModel.swift
+//  AppModel.swift
 //  AppStoreTCA
 //
 //  Created by Rimesh Jotaniya on 04/11/24.
 //
 import Foundation
 
-struct AppApiModel: Decodable, Identifiable, Equatable {
+struct AppModel: Decodable, Identifiable, Equatable {
     var id: Int { trackId }
 
     let trackId: Int

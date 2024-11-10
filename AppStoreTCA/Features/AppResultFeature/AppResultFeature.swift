@@ -12,7 +12,7 @@ import SwiftUI
 struct AppResultFeature {
     @ObservableState struct State: Equatable, Identifiable {
         var id: Int { app.id }
-        var app: AppApiModel
+        var app: AppModel
         var downloadApp: DownloadFeature.State
     }
 

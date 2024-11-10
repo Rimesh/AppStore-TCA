@@ -173,7 +173,7 @@ struct AppDetailsView: View {
         Store(
             initialState: AppDetailsFeature.State(
                 app: .mock,
-                downloadApp: DownloadFeature.State(purchaseLabelPosition: .vertial)
+                downloadApp: DownloadFeature.State(purchaseLabelPosition: .vertical)
             )
         ) {
             AppDetailsFeature()
