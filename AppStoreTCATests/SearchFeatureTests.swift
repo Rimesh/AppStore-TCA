@@ -124,4 +124,35 @@ struct SearchFeatureTests {
             _ = $0.path.popLast()
         }
     }
+
+    @Test
+    func showAlertWhenSearchFails() async throws {
+        enum SearchError: Error {
+            case searchFailed
+        }
+        let store = TestStore(
+            initialState: SearchFeature.State()
+        ) {
+            SearchFeature()
+        } withDependencies: { dependencies in
+            dependencies.appStoreClient.search = { @Sendable _ in throw SearchError.searchFailed }
+        }
+
+        await store.send(.searchQueryChanged("unknownApps")) {
+            $0.searchQuery = "unknownApps"
+        }
+        await store.send(.keyboardSearchButtonTapped) {
+            $0.contentState = .loading
+        }
+        // Show alert
+        await store.receive(\.searchResponse) {
+            $0.destination = .searchFailedAlert(.searchFailedAlertState(query: $0.searchQuery))
+        }
+        // Dismiss alert when user taps ok
+        await store.send(.destination(.presented(.searchFailedAlert(.searchFailedAlertOkayButtonAction)))) {
+            $0.searchQuery = ""
+            $0.contentState = .noResults
+            $0.destination = nil
+        }
+    }
 }
