@@ -81,7 +81,7 @@ struct SearchFeature {
                 state.contentState = response.isEmpty ? .noResults : .appResults
                 return .none
             case let .categories(.delegate(.selectCategory(category))):
-                state.isSearchbarActive = true
+                state.isSearchbarActive = false
                 return .run { send in
                     await send(.searchQueryChanged(category.rawValue))
                     await send(.categorySearchInitiated)

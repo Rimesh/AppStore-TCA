@@ -84,7 +84,7 @@ struct SearchFeatureTests {
         }
         await store.send(.categories(.categoryButtonTapped(.music)))
         await store.receive(\.categories.delegate.selectCategory, .music) {
-            $0.isSearchbarActive = true
+            $0.isSearchbarActive = false
         }
         await store.receive(\.searchQueryChanged, "music") {
             $0.searchQuery = "music"
