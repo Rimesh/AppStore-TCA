@@ -19,16 +19,23 @@ struct SearchFeature {
         var isSearchbarActive = false
         var path = StackState<AppDetailsFeature.State>()
         var contentState: ContentState = .categories
+        @Presents var destination: Destination.State?
     }
 
     enum Action {
         case searchQueryChanged(String)
         case keyboardSearchButtonTapped
+        case categorySearchInitiated
         case searchResponse(Result<[AppModel], any Error>)
         case categories(CategoryFeature.Action)
         case searchbarFocusChanged(Bool)
         case path(StackAction<AppDetailsFeature.State, AppDetailsFeature.Action>)
         case appResults(IdentifiedActionOf<AppResultFeature>)
+        case destination(PresentationAction<Destination.Action>)
+
+        enum Alert: Equatable {
+            case searchFailedAlertOkayButtonAction
+        }
     }
 
     enum ContentState: Equatable {
@@ -51,8 +58,7 @@ struct SearchFeature {
                     state.contentState = .categories
                 }
                 return .none
-
-            case .keyboardSearchButtonTapped:
+            case .keyboardSearchButtonTapped, .categorySearchInitiated:
                 guard !state.searchQuery.isEmpty else {
                     state.contentState = .noResults
                     return .cancel(id: CancelID.appSearch)
@@ -62,11 +68,9 @@ struct SearchFeature {
                     await send(.searchResponse(Result { try await self.appStoreClient.search(query: query) }))
                 }
                 .cancellable(id: CancelID.appSearch)
-
             case .searchResponse(.failure):
-                state.contentState = .noResults
+                state.destination = .searchFailedAlert(.searchFailedAlertState(query: state.searchQuery))
                 return .none
-
             case let .searchResponse(.success(response)):
                 state.appResults = IdentifiedArrayOf(uniqueElements: response.map {
                     AppResultFeature.State(
@@ -76,16 +80,14 @@ struct SearchFeature {
                 })
                 state.contentState = response.isEmpty ? .noResults : .appResults
                 return .none
-
             case let .categories(.delegate(.selectCategory(category))):
                 state.isSearchbarActive = true
                 return .run { send in
                     await send(.searchQueryChanged(category.rawValue))
+                    await send(.categorySearchInitiated)
                 }
-
             case .categories:
                 return .none
-
             case let .searchbarFocusChanged(isActive):
                 state.isSearchbarActive = isActive
                 if isActive == false {
@@ -93,10 +95,14 @@ struct SearchFeature {
                     state.searchQuery = ""
                 }
                 return .none
-
+            case .destination(.presented(.searchFailedAlert(.searchFailedAlertOkayButtonAction))):
+                state.searchQuery = ""
+                state.contentState = .noResults
+                return .none
+            case .destination:
+                return .none
             case .path:
                 return .none
-
             case .appResults:
                 return .none
             }
@@ -107,5 +113,34 @@ struct SearchFeature {
         .forEach(\.path, action: \.path) {
             AppDetailsFeature()
         }
+        .ifLet(\.$destination, action: \.destination)
+    }
+}
+
+extension SearchFeature {
+    @Reducer
+    enum Destination {
+        case searchFailedAlert(AlertState<SearchFeature.Action.Alert>)
+    }
+}
+
+extension SearchFeature.Destination.State: Equatable {}
+
+extension AlertState where Action == SearchFeature.Action.Alert {
+    static func searchFailedAlertState(query: String) -> Self {
+        Self(
+            title: { TextState("Something went wrong") },
+            actions: {
+                ButtonState(
+                    role: .none,
+                    action: .searchFailedAlertOkayButtonAction
+                ) {
+                    TextState("Ok")
+                }
+            },
+            message: {
+                TextState("Search failed for \(query)\n Please try again later.")
+            }
+        )
     }
 }

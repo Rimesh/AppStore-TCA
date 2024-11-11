@@ -26,6 +26,12 @@ struct SearchView: View {
                 await store.send(.keyboardSearchButtonTapped).finish()
             }
         }
+        .alert(
+            $store.scope(
+                state: \.destination?.searchFailedAlert,
+                action: \.destination.searchFailedAlert
+            )
+        )
     }
 
     @ViewBuilder

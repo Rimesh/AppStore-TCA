@@ -89,6 +89,20 @@ struct SearchFeatureTests {
         await store.receive(\.searchQueryChanged, "music") {
             $0.searchQuery = "music"
         }
+        await store.receive(\.categorySearchInitiated) {
+            $0.contentState = .loading
+        }
+        await store.receive(\.searchResponse) {
+            $0.appResults = IdentifiedArrayOf(
+                uniqueElements: [AppModel].mock.map {
+                    AppResultFeature.State(
+                        app: $0,
+                        downloadApp: .init(purchaseLabelPosition: .horizontal)
+                    )
+                }
+            )
+            $0.contentState = .appResults
+        }
     }
 
     @Test func navigateToAppDetailsAndDismiss() async {
