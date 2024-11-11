@@ -21,11 +21,10 @@ struct SearchView: View {
             isPresented: $store.isSearchbarActive.sending(\.searchbarFocusChanged),
             prompt: "Apps, Games and more"
         )
-        .task(id: store.searchQuery) {
-            do {
-                try await Task.sleep(for: .milliseconds(500))
-                await store.send(.searchQueryChangeDebounced).finish()
-            } catch {}
+        .onSubmit(of: .search) {
+            Task {
+                await store.send(.keyboardSearchButtonTapped).finish()
+            }
         }
     }
 

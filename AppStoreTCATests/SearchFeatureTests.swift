@@ -28,7 +28,7 @@ struct SearchFeatureTests {
         await store.send(.searchQueryChanged("R")) {
             $0.searchQuery = "R"
         }
-        await store.send(.searchQueryChangeDebounced) {
+        await store.send(.keyboardSearchButtonTapped) {
             $0.contentState = .loading
         }
         await store.receive(\.searchResponse) {
@@ -44,7 +44,7 @@ struct SearchFeatureTests {
         }
     }
 
-    @Test func clearSearchBar() async throws {
+    @Test func clearSearchBar() async {
         let store = TestStore(
             initialState: SearchFeature.State(
                 searchQuery: "music",
@@ -56,10 +56,22 @@ struct SearchFeatureTests {
 
         await store.send(.searchQueryChanged("")) {
             $0.searchQuery = ""
-            $0.contentState = .noResults
+            $0.contentState = .categories
+        }
+    }
+
+    @Test func dismissSearchbar() async {
+        let store = TestStore(
+            initialState: SearchFeature.State(
+                searchQuery: "music",
+                isSearchbarActive: true
+            )
+        ) {
+            SearchFeature()
         }
         await store.send(.searchbarFocusChanged(false)) {
             $0.isSearchbarActive = false
+            $0.searchQuery = ""
             $0.contentState = .categories
         }
     }
@@ -79,7 +91,7 @@ struct SearchFeatureTests {
         }
     }
 
-    @Test func navigateToAppDetailsAndDismiss() async throws {
+    @Test func navigateToAppDetailsAndDismiss() async {
         let store = TestStore(initialState: SearchFeature.State()) {
             SearchFeature()
         }

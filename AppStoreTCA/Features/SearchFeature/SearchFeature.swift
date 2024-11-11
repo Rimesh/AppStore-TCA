@@ -23,7 +23,7 @@ struct SearchFeature {
 
     enum Action {
         case searchQueryChanged(String)
-        case searchQueryChangeDebounced
+        case keyboardSearchButtonTapped
         case searchResponse(Result<[AppModel], any Error>)
         case categories(CategoryFeature.Action)
         case searchbarFocusChanged(Bool)
@@ -43,22 +43,19 @@ struct SearchFeature {
 
     var body: some Reducer<State, Action> {
         Scope(state: \.categories, action: \.categories) { CategoryFeature() }
-        Reduce {
-            state,
-                action in
+        Reduce { state, action in
             switch action {
             case let .searchQueryChanged(query):
                 state.searchQuery = query
-                // Cancel in-flight requests
-                guard !state.searchQuery.isEmpty else {
-                    state.contentState = .noResults
-                    return .cancel(id: CancelID.appSearch)
+                if query.isEmpty {
+                    state.contentState = .categories
                 }
                 return .none
 
-            case .searchQueryChangeDebounced:
+            case .keyboardSearchButtonTapped:
                 guard !state.searchQuery.isEmpty else {
-                    return .none
+                    state.contentState = .noResults
+                    return .cancel(id: CancelID.appSearch)
                 }
                 state.contentState = .loading
                 return .run { [query = state.searchQuery] send in
@@ -93,6 +90,7 @@ struct SearchFeature {
                 state.isSearchbarActive = isActive
                 if isActive == false {
                     state.contentState = .categories
+                    state.searchQuery = ""
                 }
                 return .none
 
